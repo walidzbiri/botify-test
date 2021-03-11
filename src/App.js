@@ -95,6 +95,7 @@ class App extends Component {
       {/* Check if data is fully loaded from API */}
       {this.state.dataLoadingStatus === 'ready' ? (
           <div className="chart-panel">
+              <ChooseOrbit handleOrbit={this.handleOrbit} />
               <ChartView data={this.state.filteredChartData} />
           </div>
     ) : (
