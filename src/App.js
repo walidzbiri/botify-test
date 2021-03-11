@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import ChartView from './components/ChartView';
+import ChooseOrbit from './components/ChooseOrbit';
+
 
 class App extends Component {
   constructor(props){
@@ -7,8 +9,10 @@ class App extends Component {
     this.state = { 
       dataLoadingStatus: 'loading',
       neos: [],
+      nonFilteredChartData: [],
       filteredChartData: [],
       chartHeaders: ['Name', 'Min Estimated Diameter (km)', 'Max Estimated Diameter (km)'],
+      selectedOrbi: 'none'
     }
   }
   // trigger this method when App component is mounted to DOM tree.
@@ -42,10 +46,46 @@ class App extends Component {
       this.setState({
         dataLoadingStatus: 'ready',
         neos: neos,
+        nonFilteredChartData: chartData,
         filteredChartData: chartData
       })
     }
     fetchData();
+  }
+
+  // Function to handle Orbit body filtering
+  handleOrbit = (orbit) => {
+    // update the selectedOrbit
+    this.setState({selectedOrbi: orbit});
+    // If user selected none then show all neos
+    if(orbit==='none'){
+      this.setState({filteredChartData: this.state.nonFilteredChartData})
+    }else{
+      // container used to collect filtered NEOs
+      const tmpFilteredData=[];
+      // Loop through all neos
+      this.state.neos.forEach((neo)=>{
+        // get Neos with specific orbiting_body in their close_approach_data attribute
+        for(let j=0;j<neo.close_approach_data.length;j++){
+          if(neo.close_approach_data[j].orbiting_body===orbit){
+            tmpFilteredData.push([
+              neo.name,
+              neo.estimated_diameter.kilometers.estimated_diameter_min,
+              neo.estimated_diameter.kilometers.estimated_diameter_max]
+              );
+            break; // if that orbit exists on that neo, pass to the next neo
+          }
+        }
+      })
+      // Sorting neos by average estimated diameter descending.
+      tmpFilteredData.sort((a,b)=>{
+        return (b[1]+b[2])/2 - (a[1]+a[2])/2
+      })
+      // Prepend filtered Data with Headers
+      tmpFilteredData.unshift(this.state.chartHeaders);
+      // Set filtredChartData state to the new neos 
+      this.setState({filteredChartData: tmpFilteredData});
+    }
   }
 
 
