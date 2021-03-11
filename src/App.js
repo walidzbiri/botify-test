@@ -3,6 +3,8 @@ import ChartView from './components/ChartView';
 import ChooseOrbit from './components/ChooseOrbit';
 import ChooseView from './components/ChooseView';
 import TableView from './components/TableView';
+import DownloadCsv from './components/DownloadCsv';
+
 
 class App extends Component {
   constructor(props){
@@ -102,6 +104,7 @@ class App extends Component {
          <div className="chart-panel">
             <ChooseOrbit handleOrbit={this.handleOrbit} />
             <ChooseView handleView={this.handleView} />
+            <DownloadCsv data={this.state.filteredChartData} />
             {/* If user choice is chart render Chart Component ,else render Table Component */}
             {this.state.view==="Chart" ? 
               <ChartView data={this.state.filteredChartData} /> : 
