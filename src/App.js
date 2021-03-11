@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import ChartView from './components/ChartView';
 import ChooseOrbit from './components/ChooseOrbit';
-
+import ChooseView from './components/ChooseView';
 
 class App extends Component {
   constructor(props){
@@ -87,7 +87,10 @@ class App extends Component {
       this.setState({filteredChartData: tmpFilteredData});
     }
   }
-
+  // function to handle view selection
+  handleView= (view) =>{
+    this.setState({view: view});
+  }
 
   render() {
     return (
