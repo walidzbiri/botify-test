@@ -99,6 +99,7 @@ class App extends Component {
       {this.state.dataLoadingStatus === 'ready' ? (
           <div className="chart-panel">
               <ChooseOrbit handleOrbit={this.handleOrbit} />
+              <ChooseView handleView={this.handleView} />
               <ChartView data={this.state.filteredChartData} />
           </div>
     ) : (
