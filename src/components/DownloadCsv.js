@@ -7,7 +7,7 @@ class DownloadCsv extends Component {
   
     render() {
         return(
-                <CSVLink data={this.props.data} filename={"neos.csv"} enclosingCharacter={''}>
+                <CSVLink data={this.props.data} filename={"nasa.csv"} enclosingCharacter={''}>
                     Download CSV
                 </CSVLink>
         )
