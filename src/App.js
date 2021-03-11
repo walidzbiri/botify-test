@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import ChartView from './components/ChartView';
 import ChooseOrbit from './components/ChooseOrbit';
 import ChooseView from './components/ChooseView';
+import TableView from './components/TableView';
 
 class App extends Component {
   constructor(props){
@@ -12,7 +13,8 @@ class App extends Component {
       nonFilteredChartData: [],
       filteredChartData: [],
       chartHeaders: ['Name', 'Min Estimated Diameter (km)', 'Max Estimated Diameter (km)'],
-      selectedOrbi: 'none'
+      selectedOrbi: 'none',
+      view: 'Chart'
     }
   }
   // trigger this method when App component is mounted to DOM tree.
@@ -97,11 +99,15 @@ class App extends Component {
     <div className="App">
       {/* Check if data is fully loaded from API */}
       {this.state.dataLoadingStatus === 'ready' ? (
-          <div className="chart-panel">
-              <ChooseOrbit handleOrbit={this.handleOrbit} />
-              <ChooseView handleView={this.handleView} />
-              <ChartView data={this.state.filteredChartData} />
-          </div>
+         <div className="chart-panel">
+            <ChooseOrbit handleOrbit={this.handleOrbit} />
+            <ChooseView handleView={this.handleView} />
+            {/* If user choice is chart render Chart Component ,else render Table Component */}
+            {this.state.view==="Chart" ? 
+              <ChartView data={this.state.filteredChartData} /> : 
+              <TableView data={this.state.filteredChartData} />
+            }
+       </div>
     ) : (
       // if Data is not ready show a message
       <div>Fetching data from API, Wait Please</div>
