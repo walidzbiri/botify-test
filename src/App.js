@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-
+import ChartView from './components/ChartView';
 
 class App extends Component {
   constructor(props){
@@ -52,7 +52,15 @@ class App extends Component {
   render() {
     return (
     <div className="App">
-      <h2>Hello Botify</h2>
+      {/* Check if data is fully loaded from API */}
+      {this.state.dataLoadingStatus === 'ready' ? (
+          <div className="chart-panel">
+              <ChartView data={this.state.filteredChartData} />
+          </div>
+    ) : (
+      // if Data is not ready show a message
+      <div>Fetching data from API, Wait Please</div>
+    )}
     </div>)
   }
 }
