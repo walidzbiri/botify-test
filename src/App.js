@@ -19,8 +19,8 @@ class App extends Component {
     }
   }
   chartHeaders=['Name', 'Min Estimated Diameter (km)', 'Max Estimated Diameter (km)'];
+  
   componentDidMount(){
-    // Function responsible for fetching data from API
     const fetchData=async ()=>{
       // Use personal key, because the DEMO one has a restricted number of requests
       const API_KEY='ExunHUTlsBb0m1lJRTOXagBfYrZ3auNKcJ0XaHbv';
@@ -55,23 +55,12 @@ class App extends Component {
 
   // Function to handle Orbit body filtering
   handleOrbit = (orbit) => {
-    // update the selectedOrbit
     this.setState({selectedOrbi: orbit});
     // If user selected none then show all neos
     if(orbit==='none'){
       this.setState({filteredChartData: this.state.nonFilteredChartData})
     }else{     
       const tmpFilteredData=[]
-      //this.state.nonFilteredChartData.map((neo)=>{
-      //   if(neo.close_approach_data[j].orbiting_body===orbit){
-      //     return ([
-      //       neo.name,
-      //       neo.estimated_diameter.kilometers.estimated_diameter_min,
-      //       neo.estimated_diameter.kilometers.estimated_diameter_max]
-      //     )
-      //   }
-      // })
-      // Loop through all neos
       this.state.neos.forEach((neo)=>{
         // get Neos with specific orbiting_body in their close_approach_data attribute
         for(let j=0;j<neo.close_approach_data.length;j++){
