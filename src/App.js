@@ -14,12 +14,11 @@ class App extends Component {
       neos: [],
       nonFilteredChartData: [],
       filteredChartData: [],
-      chartHeaders: ['Name', 'Min Estimated Diameter (km)', 'Max Estimated Diameter (km)'],
       selectedOrbi: 'none',
       view: 'Chart'
     }
   }
-  // trigger this method when App component is mounted to DOM tree.
+  chartHeaders=['Name', 'Min Estimated Diameter (km)', 'Max Estimated Diameter (km)'];
   componentDidMount(){
     // Function responsible for fetching data from API
     const fetchData=async ()=>{
@@ -27,25 +26,22 @@ class App extends Component {
       const API_KEY='ExunHUTlsBb0m1lJRTOXagBfYrZ3auNKcJ0XaHbv';
       const API_URL = `https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=${API_KEY}`
       const response = await fetch(API_URL);
-      // get response in json format
       const json = await response.json();
-      // Extract near_earth_objects attribute from response
       const neos=json.near_earth_objects;
-      // Initialize Chart as empty array
-      const chartData = []
-      // Loop through neos and get exact data from it
-      for (let i = 0; i < neos.length; i += 1) {
-        chartData.push([neos[i].name,
-                        neos[i].estimated_diameter.kilometers.estimated_diameter_min,
-                        neos[i].estimated_diameter.kilometers.estimated_diameter_max
-                      ])
-      }
+      // Map neos and get exact data from it
+      const chartData =neos.map((neo)=>{
+        return ([neo.name,
+          neo.estimated_diameter.kilometers.estimated_diameter_min,
+          neo.estimated_diameter.kilometers.estimated_diameter_max
+        ])
+      })
+
       // Sorting neos by average estimated diameter descending.
       chartData.sort((a,b)=>{
         return (b[1]+b[2])/2 - (a[1]+a[2])/2
       })
       // Prepend chart Data with Headers
-      chartData.unshift(this.state.chartHeaders)
+      chartData.unshift(this.chartHeaders)
       // after data fetching set states to new values
       this.setState({
         dataLoadingStatus: 'ready',
@@ -64,9 +60,17 @@ class App extends Component {
     // If user selected none then show all neos
     if(orbit==='none'){
       this.setState({filteredChartData: this.state.nonFilteredChartData})
-    }else{
-      // container used to collect filtered NEOs
-      const tmpFilteredData=[];
+    }else{     
+      const tmpFilteredData=[]
+      //this.state.nonFilteredChartData.map((neo)=>{
+      //   if(neo.close_approach_data[j].orbiting_body===orbit){
+      //     return ([
+      //       neo.name,
+      //       neo.estimated_diameter.kilometers.estimated_diameter_min,
+      //       neo.estimated_diameter.kilometers.estimated_diameter_max]
+      //     )
+      //   }
+      // })
       // Loop through all neos
       this.state.neos.forEach((neo)=>{
         // get Neos with specific orbiting_body in their close_approach_data attribute
@@ -86,7 +90,7 @@ class App extends Component {
         return (b[1]+b[2])/2 - (a[1]+a[2])/2
       })
       // Prepend filtered Data with Headers
-      tmpFilteredData.unshift(this.state.chartHeaders);
+      tmpFilteredData.unshift(this.chartHeaders);
       // Set filtredChartData state to the new neos 
       this.setState({filteredChartData: tmpFilteredData});
     }

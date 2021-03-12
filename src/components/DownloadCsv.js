@@ -1,17 +1,11 @@
-import React,{Component} from 'react';
 import { CSVLink } from "react-csv";
 
+const DownloadCsv=({data})=>{
+    return(
+        <CSVLink data={data} filename={"nasa.csv"} enclosingCharacter={''}>
+            Download CSV
+        </CSVLink>
+)
+}
 
-
-class DownloadCsv extends Component {
-  
-    render() {
-        return(
-                <CSVLink data={this.props.data} filename={"nasa.csv"} enclosingCharacter={''}>
-                    Download CSV
-                </CSVLink>
-        )
-    }
-  }
-
-  export default DownloadCsv;
+export default DownloadCsv;
