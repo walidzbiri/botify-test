@@ -15,11 +15,15 @@ The test consists of the following steps:
 ## Project workflow
 Each step is a new branch. At the end of each step, I create a Pull Request for the branch
 to explain what’s been done in the step. Then merge it with the main (master) branch. Each branch is created from the main branch.
+You can consider each branch as a shippable part of the full project
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available scripts
+
+Install all project dependencies in package.json
+### `npm install`
 
 In the project directory, you can run:
 
